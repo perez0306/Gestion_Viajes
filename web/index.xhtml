@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+    <html>
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title>Gestion Viajes</title>
+        </h:head>
+
+        <h:body style="border: 0px; margin: 0px;"> 
+
+            <section class="container">
+                <div class="header">
+                    <img class="header-image" src="image/universidad.jpg" width="180px" height="100%" alt="Logo Universidad" />
+                    <p class="header-title">Gestion de viajes</p>
+                </div>
+                <div class="box-button">
+                    <h:link class="box-button_create" value = "Crear Viaje" outcome = "CreateTravel.xhtml" />                                
+                    <h:link class="box-button_list" value = "Lista proveedores" outcome = "CreateTravel.xhtml" />                                
+                    <h:button class="box-button_update" value="Actualizar planta"  /> 
+                </div>
+
+                <div class="tableList">
+                    <h1>Lista de Archivos</h1>
+
+                    <p:dataTable 
+                        id="tableFile" 
+                        value="#{manejadorBean.lista}" 
+                        var="p" 
+                        paginator="true"
+                        style="display: grid; width: 80%; align-content: flex-start  " >
+                        <p:column headerText="Nombre Archivo" style="width: 70%">
+                            <h:outputLabel value= "Archivo1"/>
+                        </p:column>
+                        <p:column headerText="Acciones" style="width:30%">
+                            <p:commandButton icon="ui-icon-pencil" action="#{manejadorBean.leerID(p)}" oncomplete="PF('producto').show();" update=":dialog"/>
+                            <p:commandButton icon="ui-icon-trash" action="#{manejadorBean.eliminar(p.id)}" update="tableFile"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listar()}" update="tableFile" style="height: 30%" />
+
+                    <p:dialog id="dialog" header="Datos a modificar" widgetVar="producto"  resizable="false" modal="true" showEffect="clip" >
+                        <span class="ui-float-label" >
+                            <p:outputLabel value="ID  - #{manejadorBean.id}" />
+                        </span>
+                        <br/>
+                        <span class="ui-float-label">
+                            <p:inputText id="nombre" value="#{manejadorBean.nombre}"/>
+                            <p:outputLabel for="@previous" value="Nombre"/>
+                        </span>
+                        <br/>
+                        <span class="ui-float-label">
+                            <p:inputText id="descripcion" value="#{manejadorBean.descripcion}"/>
+                            <p:outputLabel for="@previous" value="Descripcion"/>
+                        </span>
+                        <br/>
+                        <span class="ui-float-label" >
+                            <p:inputText id="categoria" value="#{manejadorBean.categoria}"/>
+                            <p:outputLabel for="@previous" value="Categoria"/>
+                        </span>
+                        <br/>
+                        <h4 style="padding: 0; margin: 0">Bodega</h4>
+                        <p:selectOneRadio value="#{manejadorBean.bodega}">
+                            <f:selectItem  itemValue="Principal" itemLabel="Principal"/>
+                            <f:selectItem itemValue="Auxiliar" itemLabel="Auxiliar"/>
+                        </p:selectOneRadio>
+                        <br/>
+                        <span class="ui-float-label" >
+                            <p:inputText id="peso" value="#{manejadorBean.peso}"/>
+                            <p:outputLabel for="@previous" value="Peso"/>
+                        </span>
+                        <br/>
+
+                        <p:commandButton value="Editar" actionListener="#{manejadorBean.editar()}" />
+                        <p:commandButton value="Cancelar" oncomplete="PF('producto').hide();" />
+
+                    </p:dialog>  
+                </div>
+
+                <div class="footer">
+                    <p>Universidad Central</p>
+                    <p>Realizado por Omar Andres Perez Gil - Estudiante de ingenieria de sistemas</p>
+                    <p>Tutor Giovanny Alexander Briceño Riveros</p>
+                    <p>2021 </p>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+            <style>
+                .container{
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-areas: 
+                        "head head head"
+                        "left buttons right"
+                        "table table table"
+                        "foot foot foot";
+                    grid-template-rows: 1fr 3fr 6fr 1fr ;
+                    grid-template-columns: 1fr 3fr 1fr;
+                }
+                .header{
+                    display: grid;
+                    grid-area: head;
+                    grid-template-rows: 1fr ;
+                    grid-template-columns: 1fr 5fr 1fr;
+                    align-items: stretch;
+                    background: cadetblue;
+                }
+                .header-title{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-content: center;
+                }
+                .box-button{
+                    grid-area: buttons;
+                    display: grid;
+                    grid-template-rows: 1fr ;
+                    grid-template-columns: repeat(3, 1fr);
+                    justify-items: center;
+                    align-items: center;
+                }
+                .box-button_create{
+                    display: grid;
+                    font-size: 20px;
+                    text-decoration: none;
+                    color: black;
+                    border-width: 2px;
+                    border-style: outset;
+                    padding: 10px;
+                    border-radius: 20px;
+                    width: 60%;
+                    justify-content: center;
+                    background-color: buttonface;
+
+                }
+                .box-button_create:hover{
+                    background-color: rgb(93, 181, 111, .5);
+                }
+                .box-button_list{
+                    display: grid;
+                    width: 60%;
+                    font-size: 20px;
+                    text-decoration: none;
+                    color: black;
+                    border-width: 2px;
+                    border-style: outset;
+                    padding: 10px;
+                    border-radius: 20px;
+                    justify-content: center;
+                    background-color: buttonface;
+                }
+                .box-button_list:hover{
+                    background-color: rgb(93, 181, 111, .5);
+                }
+                .box-button_update{
+                    font-family: serif;
+                    width: 60%; 
+                    border-radius: 20px;
+                    font-size: 20px;
+                    text-decoration: none;
+                    color: black;
+                    padding: 10px;
+                    background-color: buttonface;
+
+                }
+                .box-button_update:hover{
+                    background-color: rgb(93, 181, 111, .5);
+                }
+                .tableList{
+                    grid-area: table;
+                    display: grid;
+                    grid-template-rows: 2fr 5fr 2fr;
+                    grid-template-columns: 1fr;
+                    justify-items: center;
+                }
+                .tableList-table{
+                    display: grid;  
+                }
+                .footer{
+                    grid-area: foot;
+                    background: cadetblue; 
+                    justify-items: center;
+                    align-items: center;
+                }
+                p{
+                    display: grid;
+                    justify-items: center;
+                    font-size: 20;
+                    margin: 5;
+                }
+            </style>
+        </h:body>  
+    </html>
+</f:view>

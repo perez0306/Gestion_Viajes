@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Gestion Viajes</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        </h:head>
+        <h:body>
+            <h:form id="crear" style="display: flex; justify-content: center">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <p:panel header="Crear producto" 
+                         style="width: 40%" >
+                    <br/>
+                    <span class="ui-float-label" >
+                        <p:inputText id="nombre" value="#{manejadorBean.nombre}"/>
+                        <p:outputLabel for="@previous" value="Nombre"/>
+                    </span>
+                    <br/>
+                    <span class="ui-float-label">
+                        <p:inputText id="descripcion" value="#{manejadorBean.descripcion}"/>
+                        <p:outputLabel for="@previous" value="Descripcion"/>
+                    </span>
+                    <br/>
+                    <span class="ui-float-label">
+                        <p:inputText id="categoria" value="#{manejadorBean.categoria}"/>
+                        <p:outputLabel for="@previous" value="Categoria"/>
+                    </span>
+                    <br/>
+                    <h4 style="padding: 0; margin: 0">Bodega</h4>
+                    <p:selectOneRadio value="#{manejadorBean.bodega}">
+                        <f:selectItem  itemValue="Principal" itemLabel="Principal"/>
+                        <f:selectItem itemValue="Auxiliar" itemLabel="Auxiliar"/>
+                    </p:selectOneRadio>
+                    <br/>
+                    <span class="ui-float-label">
+                        <p:inputText id="peso" value="#{manejadorBean.peso}"/>
+                        <p:outputLabel for="@previous" value="Peso"/>
+                    </span>
+                    <br/>
+
+                    <p:commandButton value="Ingresar" actionListener="#{manejadorBean.guardar()}"  />
+                    <br/>
+
+                </p:panel>
+            </h:form>
+            
+        </h:body>
+    </html>
+</f:view>
