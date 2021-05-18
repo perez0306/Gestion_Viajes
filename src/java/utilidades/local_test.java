@@ -8,7 +8,7 @@ package utilidades;
 import logica.OperItem;
 import dto.Producto;
 import java.util.List;
-import logica.OperProducto;
+import logica.OperFile;
 /**
  *
  * @author CARITO
@@ -23,7 +23,7 @@ public class local_test {
                 "hola",
                 22);
         
-        OperProducto oper = new OperProducto();
+        OperFile oper = new OperFile();
        // oper.insert(e);
        // oper.delete(5);
        // oper.update(e, 2);

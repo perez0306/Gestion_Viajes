@@ -15,7 +15,7 @@ import java.util.List;
 public interface Operaciones<T> {
     public int insert(T dato);
     public List<T> getAll();
-
+   
     /**
      *
      * @param id

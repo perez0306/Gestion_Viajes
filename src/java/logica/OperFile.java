@@ -5,10 +5,10 @@
  */
 package logica;
 
-import dto.Producto;
 import database.Conexiones;
+import dto.File;
+import dto.Item;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,14 +17,63 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author Vinni
  */
-public class OperProducto implements Operaciones<Producto> {
+public class OperFile implements Operaciones<File> {
 
     @Override
+    public int insert(File dato) {
+        return 0;
+    }
+
+    @Override
+    public List<File> getAll() {
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+        List<File> listaFile = new ArrayList<File>();
+        try {
+            String sql = "SELECT * FROM archivos";
+            Statement stmt = cActiva.createStatement();
+            ResultSet respuesta = stmt.executeQuery(sql);
+            if (cActiva != null) {
+                try {
+                    while (respuesta.next()) {
+                        File file = new File(
+                            respuesta.getString("nombre"),
+                            respuesta.getString("fecha")
+                        );
+                        listaFile.add(file);
+                    }
+                    return listaFile;
+                } catch (SQLException ex) {
+                    System.out.println("Error al listar los archivos....");
+                    Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    stmt.close();
+                    respuesta.close();
+                    c.desconectase(cActiva);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error en listar archivos: Statement o ResultSet...");
+            Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+
+    @Override
+    public int delete(int id) {
+        return 0;
+    }
+
+    @Override
+    public int update(File dato) {
+        return 0;
+    }
+
+    /*@Override
     public int insert(Producto dato) {
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
@@ -41,7 +90,7 @@ public class OperProducto implements Operaciones<Producto> {
                     return ps.executeUpdate();
                 } catch (SQLException ex) {
                     System.out.println("Error al crear el usuario...");
-                    Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     ps.close();
                     c.desconectase(cActiva);
@@ -49,7 +98,7 @@ public class OperProducto implements Operaciones<Producto> {
             }
         } catch (Exception e) {
             System.out.println("Error en crear: PreparedStatement...");
-            Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, e);
         }
         return 0;
     }
@@ -79,7 +128,7 @@ public class OperProducto implements Operaciones<Producto> {
                     return listaProductos;
                 } catch (SQLException ex) {
                     System.out.println("Error al listar los productos....");
-                    Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     stmt.close();
                     respuesta.close();
@@ -88,7 +137,7 @@ public class OperProducto implements Operaciones<Producto> {
             }
         } catch (Exception e) {
             System.out.println("Error en listar: Statement o ResultSet...");
-            Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
@@ -107,7 +156,7 @@ public class OperProducto implements Operaciones<Producto> {
                     return ps.executeUpdate();
                 } catch (SQLException ex) {
                     System.out.println("Error al elminar producto....");
-                    Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     ps.close();
                     c.desconectase(cActiva);
@@ -115,17 +164,12 @@ public class OperProducto implements Operaciones<Producto> {
             }
         } catch (Exception e) {
             System.out.println("Error en delete: PreparedStatement...");
-            Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, e);
         }
         return 0;
     }
 
-    /**
-     *
-     * @param data
-     * @param id
-     * @return
-     */
+    
     @Override
     public int update(Producto data) {
         Conexiones c = new Conexiones();
@@ -145,7 +189,7 @@ public class OperProducto implements Operaciones<Producto> {
                     return ps.executeUpdate();
                 } catch (SQLException ex) {
                     System.out.println("Error al elminar producto....");
-                    Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     ps.close();
                     c.desconectase(cActiva);
@@ -153,9 +197,9 @@ public class OperProducto implements Operaciones<Producto> {
             }
         } catch (Exception e) {
             System.out.println("Error en update: PreparedStatement...");
-            Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, e);
         }
         return 0;
     }
-
+     */
 }

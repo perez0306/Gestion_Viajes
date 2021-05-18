@@ -25,15 +25,11 @@
                         </p:messages>
 
                         <p:panel header="Crear viaje"  >
-          
-                            <label for="empleado" style="margin-right: 10px">Empleado</label>
-                            <p:selectOneMenu id="empleado" style="margin-bottom: 20px">
-                                <f:selectItem itemLabel="Select" itemValue="" value="#{manejadorBean.nombre}"/>
-                                <f:selectItem itemLabel="Perez" itemValue="Arizona" value="#{manejadorBean.nombre}"/>
-                                <f:selectItem itemLabel="Rodriguez" itemValue="California" value="#{manejadorBean.nombre}"/>
-                                <f:selectItem itemLabel="Sanchez" itemValue="Florida" value="#{manejadorBean.nombre}"/>
-                                <f:selectItem itemLabel="Arcila" itemValue="Ohio" value="#{manejadorBean.nombre}"/>
-                                <f:selectItem itemLabel="Washington" itemValue="Washington" value="#{manejadorBean.nombre}"/>
+
+                            <label for="@next" >Empleado</label>
+                            <p:selectOneMenu id="empleado" value="#{manejadorBean.nombreEmpleado}">
+                                <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                                <f:selectItems value="#{manejadorBean.listaEmpleados}"/>
                             </p:selectOneMenu>
                             <br/>
                             <span class="ui-float-label">
@@ -81,14 +77,14 @@
                 <p:dialog id="dialog" header="Datos a modificar" widgetVar="viaje"  resizable="false" modal="true" showEffect="clip" >
 
                     <h:form>
-                        
+
                         <span class="ui-float-label">
                             <p:inputText id="id" value="#{manejadorBean.destino}"/>
                             <p:outputLabel for="@previous" value="Nombre"/>
                         </span>
                         <br/>
                         <span class="ui-float-label" >
-                            <p:inputText id="nombre" value="#{manejadorBean.nombre}"/>
+                            <p:inputText id="nombre" value="#{manejadorBean.nombreEmpleado}"/>
                             <p:outputLabel for="@previous" value="Peso"/>
                         </span>
                         <br/>

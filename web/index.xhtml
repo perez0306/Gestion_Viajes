@@ -20,9 +20,9 @@
                     <p class="header-title">Gestion de viajes</p>
                 </div>
                 <div class="box-button">
-                    <h:link class="box-button_create" value = "Crear Viaje" outcome = "CreateTravel.xhtml" />                                
+                    <h:link class="box-button_create" value = "Crear Viaje" outcome = "CreateTravel.xhtml"  />                                
                     <h:link class="box-button_list" value = "Lista proveedores" outcome = "CreateTravel.xhtml" />                                
-                    <h:button class="box-button_update" value="Actualizar planta"  /> 
+                    <h:button class="box-button_update" value="Actualizar planta" onclick="#{manejadorBean.actualizarPlanta()}" /> 
                 </div>
 
                 <div class="tableList">
@@ -30,7 +30,7 @@
 
                     <p:dataTable 
                         id="tableFile" 
-                        value="#{manejadorBean.lista}" 
+                        value="#{manejadorBean.listaArchivos}" 
                         var="p" 
                         paginator="true"
                         style="display: grid; width: 80%; align-content: flex-start  " >

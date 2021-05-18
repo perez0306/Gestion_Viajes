@@ -10,7 +10,7 @@ package dto;
  * @author CARITO
  */
 public class Empleado {
-    private String nombre;
+    private String nombreEmpleado;
     private int id;
     private String rol;
 
@@ -18,17 +18,17 @@ public class Empleado {
     }
 
     public Empleado(String nombre, int id, String rol) {
-        this.nombre = nombre;
+        this.nombreEmpleado = nombre;
         this.id = id;
         this.rol = rol;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreEmpleado() {
+        return nombreEmpleado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreEmpleado(String nombreEmpleado) {
+        this.nombreEmpleado = nombreEmpleado;
     }
 
     public int getId() {
@@ -49,7 +49,7 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "Empleado{" + "nombre=" + nombre + ", id=" + id + ", rol=" + rol + '}';
+        return "Empleado{" + "nombre=" + nombreEmpleado + ", id=" + id + ", rol=" + rol + '}';
     }
     
 }
