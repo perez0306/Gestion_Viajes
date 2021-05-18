@@ -5,9 +5,10 @@
  */
 package utilidades;
 
-import logica.OperProducto;
+import logica.OperItem;
 import dto.Producto;
 import java.util.List;
+import logica.OperProducto;
 /**
  *
  * @author CARITO

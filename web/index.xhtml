@@ -38,49 +38,14 @@
                             <h:outputLabel value= "Archivo1"/>
                         </p:column>
                         <p:column headerText="Acciones" style="width:30%">
-                            <p:commandButton icon="ui-icon-pencil" action="#{manejadorBean.leerID(p)}" oncomplete="PF('producto').show();" update=":dialog"/>
-                            <p:commandButton icon="ui-icon-trash" action="#{manejadorBean.eliminar(p.id)}" update="tableFile"/>
+                            <p:commandButton icon="ui-icon-pencil"  oncomplete="PF('producto').show();" update=":dialog"/>
+                            <p:commandButton icon="ui-icon-trash"  update="tableFile"/>
                         </p:column>
                     </p:dataTable>
 
                     <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listar()}" update="tableFile" style="height: 30%" />
 
-                    <p:dialog id="dialog" header="Datos a modificar" widgetVar="producto"  resizable="false" modal="true" showEffect="clip" >
-                        <span class="ui-float-label" >
-                            <p:outputLabel value="ID  - #{manejadorBean.id}" />
-                        </span>
-                        <br/>
-                        <span class="ui-float-label">
-                            <p:inputText id="nombre" value="#{manejadorBean.nombre}"/>
-                            <p:outputLabel for="@previous" value="Nombre"/>
-                        </span>
-                        <br/>
-                        <span class="ui-float-label">
-                            <p:inputText id="descripcion" value="#{manejadorBean.descripcion}"/>
-                            <p:outputLabel for="@previous" value="Descripcion"/>
-                        </span>
-                        <br/>
-                        <span class="ui-float-label" >
-                            <p:inputText id="categoria" value="#{manejadorBean.categoria}"/>
-                            <p:outputLabel for="@previous" value="Categoria"/>
-                        </span>
-                        <br/>
-                        <h4 style="padding: 0; margin: 0">Bodega</h4>
-                        <p:selectOneRadio value="#{manejadorBean.bodega}">
-                            <f:selectItem  itemValue="Principal" itemLabel="Principal"/>
-                            <f:selectItem itemValue="Auxiliar" itemLabel="Auxiliar"/>
-                        </p:selectOneRadio>
-                        <br/>
-                        <span class="ui-float-label" >
-                            <p:inputText id="peso" value="#{manejadorBean.peso}"/>
-                            <p:outputLabel for="@previous" value="Peso"/>
-                        </span>
-                        <br/>
-
-                        <p:commandButton value="Editar" actionListener="#{manejadorBean.editar()}" />
-                        <p:commandButton value="Cancelar" oncomplete="PF('producto').hide();" />
-
-                    </p:dialog>  
+                   
                 </div>
 
                 <div class="footer">
