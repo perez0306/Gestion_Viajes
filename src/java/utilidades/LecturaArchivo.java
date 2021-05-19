@@ -8,6 +8,7 @@ package utilidades;
 import dto.Empleado;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,13 +19,11 @@ public class LecturaArchivo {
     FileReader fr = null;
     BufferedReader br = null;
 
-    public ArrayList<Empleado> leerArchivoTH(String nombreDocumento) {
-        int[] datos = null;
-        long[] tiempos= null;
+    public List<Empleado> leerArchivoTH(String nombreDocumento) {
         try {
             fr = new FileReader(nombreDocumento);
             br = new BufferedReader(fr);
-            ArrayList<Empleado> resultado = new ArrayList<>();
+            List<Empleado> resultado = new ArrayList<>();
 
             // Lectura del fichero
             String linea;
@@ -32,7 +31,7 @@ public class LecturaArchivo {
             int id;
             
             while ((linea = br.readLine()) != null) {
-                String informacion[] = br.readLine().split("/");
+                String informacion[] = linea.split("/");
                 id = Integer.parseInt(informacion[0]);
                 nombre = informacion[1];
                 rol = informacion[2];

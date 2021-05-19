@@ -23,6 +23,9 @@ import java.util.logging.Logger;
  */
 public class OperFile implements Operaciones<File> {
 
+    public OperFile() {
+    }
+    
     @Override
     public int insert(File dato) {
         return 0;

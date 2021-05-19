@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+    <html>
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title>Gestion Viajes</title>
+        </h:head>
+        <h:body style="border: 0px; margin: 0px;">
+            <section class="container">
+                <header class="header">
+                    <img class="header-image" src="image/universidad.jpg" width="180px" height="100%" alt="Logo Universidad" />
+                    <p class="header-title">Gestion de viajes</p>
+                </header>
+
+                <h:form class="createForm" style="display: flex; justify-content: center">
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <p:panel header="Crear producto" 
+                             style="width: 40%" >
+                        <br/>
+                        <span class="ui-float-label" >
+                            <p:inputText id="nombre" value="#{manejadorBean.nombreItem}"/>
+                            <p:outputLabel for="@previous" value="Nombre"/>
+                        </span>
+                        <br/>
+                        <h4 style="padding: 0; margin: 0">Categoria</h4>
+                        <p:selectOneRadio value="#{manejadorBean.categoriaItem}">
+                            <f:selectItem  itemValue="Alimentacion" itemLabel="Alimentacion"/>
+                            <f:selectItem itemValue="Hospedaje" itemLabel="Hospedaje"/>
+                            <f:selectItem itemValue="Transporte" itemLabel="Transporte"/>
+                            <f:selectItem itemValue="Otros" itemLabel="Otros"/>
+                        </p:selectOneRadio>
+                        <br/>
+                        <span class="ui-float-label">
+                            <p:inputText id="precio" value="#{manejadorBean.precioItem}"/>
+                            <p:outputLabel for="@previous" value="Precio"/>
+                        </span>
+                        <br/>
+
+                        <p:commandButton value="Guardar" actionListener="#{manejadorBean.guardarProducto()}"  />
+                        <br/>
+
+                    </p:panel>
+                </h:form>
+
+                <h:form class="table">
+                    <h1>Lista Productos</h1>
+                    <p:dataTable id="tableProducto" 
+                                 value="#{manejadorBean.listaProductos}" 
+                                 style="margin-bottom:20px" 
+                                 var="producto"  
+                                 paginator="true"
+                                 editable="true">
+
+
+                        <p:column headerText="ID" >
+                            <h:outputLabel value= "#{producto.id}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <h:outputLabel value="#{producto.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Categoria" >
+                            <h:outputLabel value="#{producto.categoria}"/>
+                        </p:column>
+
+                        <p:column headerText="Precio" >
+                            <h:outputLabel value="#{producto.precio}"/>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width:6rem">
+                            <p:commandButton icon="ui-icon-pencil" action="#{manejadorBean.leerProducto(producto)}" oncomplete="PF('producto').show();" update=":dialog"/>
+                            <p:commandButton icon="ui-icon-trash" action="#{manejadorBean.eliminarProducto(producto.id)}" update="tableProducto"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listarProductos()}" update="tableProducto" style="margin:20px;"/>
+
+                </h:form>
+
+
+
+                <p:dialog id="dialog" header="Datos a modificar" widgetVar="producto"  resizable="false" modal="true" showEffect="clip" >
+                    <h:form id="formDialog"  >
+
+                        <span class="ui-float-label" style="margin-top: 20px; align-items: center;">
+                            <p:outputLabel value="ID  - #{manejadorBean.idItem}" style="font-size: 40; 
+                                           font-family: sans-serif; 
+                                           color: black;"/>
+                        </span>
+                        <br/>
+                        <span class="ui-float-label" style="margin-top: 15px;">
+                            <p:inputText id="nombre" value="#{manejadorBean.nombreItem}"/>
+                            <p:outputLabel for="@previous" value="Nombre"/>
+                        </span>
+                        <br/>
+                        <h4 style="padding: 0; margin: 0">Categoria</h4>
+                        <p:selectOneRadio value="#{manejadorBean.categoriaItem}">
+                            <f:selectItem  itemValue="Alimentacion" itemLabel="Alimentacion"/>
+                            <f:selectItem itemValue="Hospedaje" itemLabel="Hospedaje"/>
+                            <f:selectItem itemValue="Transporte" itemLabel="Transporte"/>
+                            <f:selectItem itemValue="Otros" itemLabel="Otros"/>
+                        </p:selectOneRadio>
+                        <br/>
+                        <span class="ui-float-label" style="margin-top: 15px;">
+                            <p:inputText id="precio" value="#{manejadorBean.precioItem}"/>
+                            <p:outputLabel for="@previous" value="Precio"/>
+                        </span>
+                        <br/>
+
+                        <p:commandButton value="Editar" actionListener="#{manejadorBean.editarProducto()}" />
+                        <p:commandButton value="Cancelar" oncomplete="PF('producto').hide();" />
+                    </h:form>
+                </p:dialog>
+
+                <h:link class="box-button_create" value = "Regresar" outcome = "index.xhtml" />
+
+                <div class="footer">
+                    <p>Universidad Central</p>
+                    <p>Realizado por Omar Andres Perez Gil - Estudiante de ingenieria de sistemas</p>
+                    <p>Tutor Giovanny Alexander Briceño Riveros</p>
+                    <p>2021 </p>
+                </div>
+            </section>
+
+            <style>
+                .container{
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-areas: 
+                        "head head head"
+                        "left create right"
+                        "left table right"
+                        "foot foot foot";
+                    grid-template-rows: 1fr 3fr 6fr 1fr ;
+                    grid-template-columns: 1fr 3fr 1fr;
+                }
+                .header{
+                    display: grid;
+                    grid-area: head;
+                    grid-template-rows: 1fr ;
+                    grid-template-columns: 1fr 5fr 1fr;
+                    align-items: stretch;
+                    background: cadetblue;
+                }
+                .header-title{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-content: center;
+                }
+                .createForm{
+                    grid-area: create;
+                }
+                .table{
+                    grid-area: table;
+                    display: grid;
+                    grid-template-rows: 1fr 5fr;
+                    grid-template-columns: 1fr;
+                    justify-items: center;
+                }
+                .tableList-table{
+                    display: grid;  
+                }
+                .footer{
+                    grid-area: foot;
+                    background: cadetblue; 
+                    justify-items: center;
+                    align-items: center;
+                }
+                p{
+                    display: grid;
+                    justify-items: center;
+                    font-size: 20;
+                    margin: 5;
+                }
+            </style>
+        </h:body>
+    </html>
+</f:view>

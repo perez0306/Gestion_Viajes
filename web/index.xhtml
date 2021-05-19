@@ -21,32 +21,32 @@
                 </div>
                 <div class="box-button">
                     <h:link class="box-button_create" value = "Crear Viaje" outcome = "CreateTravel.xhtml"  />                                
-                    <h:link class="box-button_list" value = "Lista proveedores" outcome = "CreateTravel.xhtml" />                                
-                    <h:button class="box-button_update" value="Actualizar planta" onclick="#{manejadorBean.actualizarPlanta()}" /> 
+                    <h:link class="box-button_list" value = "Lista Productos/Servicios" outcome = "ProductoServicios.xhtml" />                                
+                    <h:commandButton class="box-button_update" value="Actualizar planta" actionListener="#{manejadorBean.actualizarPlanta()}" /> 
                 </div>
 
-                <div class="tableList">
+
+                <h:form class="tableList">
+
                     <h1>Lista de Archivos</h1>
 
                     <p:dataTable 
                         id="tableFile" 
                         value="#{manejadorBean.listaArchivos}" 
-                        var="p" 
+                        var="file" 
                         paginator="true"
                         style="display: grid; width: 80%; align-content: flex-start  " >
                         <p:column headerText="Nombre Archivo" style="width: 70%">
-                            <h:outputLabel value= "Archivo1"/>
+                            <p:outputLabel value="#{file.nombreArchivo}"/>
                         </p:column>
                         <p:column headerText="Acciones" style="width:30%">
-                            <p:commandButton icon="ui-icon-pencil"  oncomplete="PF('producto').show();" update=":dialog"/>
+                            <p:commandButton icon="ui-icon-pencil" />
                             <p:commandButton icon="ui-icon-trash"  update="tableFile"/>
                         </p:column>
                     </p:dataTable>
+                    <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listaArchivos()}" update="tableFile" style="height: 30%" />
+                </h:form>
 
-                    <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listar()}" update="tableFile" style="height: 30%" />
-
-                   
-                </div>
 
                 <div class="footer">
                     <p>Universidad Central</p>

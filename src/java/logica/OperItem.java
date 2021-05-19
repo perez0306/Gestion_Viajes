@@ -5,7 +5,6 @@
  */
 package logica;
 
-import dto.Producto;
 import database.Conexiones;
 import dto.Item;
 import java.sql.Connection;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author Vinni
@@ -26,7 +24,30 @@ import java.util.logging.Logger;
 public class OperItem implements Operaciones<Item> {
 
     @Override
-    public int insert(Item dato) { return 0;   }
+    public int insert(Item dato) {
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+        try {
+            String sql = "INSERT INTO productoServicio(nombre, categoria, precio) VALUES (?,?,?)";
+            PreparedStatement ps = cActiva.prepareStatement(sql);
+            if (cActiva != null) {
+                try {
+                    ps.setString(1, dato.getNombre());
+                    ps.setString(2, dato.getCategoria());
+                    ps.setLong(3, dato.getPrecio());
+                    return ps.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    ps.close();
+                    c.desconectase(cActiva);
+                }
+            }
+        } catch (Exception e) {
+            Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
 
     @Override
     public List<Item> getAll() {
@@ -65,18 +86,59 @@ public class OperItem implements Operaciones<Item> {
         return null;
     }
 
-   
-    
     @Override
-    public int delete(int id) { return 0; }
+    public int delete(int id) {
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+        try {
+            String sql = "DELETE FROM productoServicio WHERE id=?";
+            PreparedStatement ps = cActiva.prepareStatement(sql);
+            if (cActiva != null) {
+                try {
+                    ps.setInt(1, id);
+                    return ps.executeUpdate();
+                } catch (SQLException ex) {
+                    System.out.println("Error al elminar productoServicio....");
+                    Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    ps.close();
+                    c.desconectase(cActiva);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al eliminar ProductoServicio: PreparedStatement...");
+            Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
 
-    /**
-     *
-     * @param data
-     * @param id
-     * @return
-     */
+
     @Override
-    public int update(Item data) { return 0; }
+    public int update(Item data) {
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+        try {
+            String sql = " UPDATE productoServicio SET nombre=?,categoria=?, precio=? where id=?";
+            PreparedStatement ps = cActiva.prepareStatement(sql);
+            if (cActiva != null) {
+                try {
+                    ps.setInt(4, data.getId());
+                    ps.setString(1, data.getNombre());
+                    ps.setString(2, data.getCategoria());
+                    ps.setLong(3, data.getPrecio());
+                    return ps.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    ps.close();
+                    c.desconectase(cActiva);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error en update: PreparedStatement...");
+            Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
 
 }
