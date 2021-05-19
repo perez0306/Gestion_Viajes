@@ -27,9 +27,9 @@
                         <p:panel header="Crear viaje"  >
 
                             <label for="@next" >Empleado</label>
-                            <p:selectOneMenu id="empleado" value="#{manejadorBean.nombreEmpleado}">
+                            <p:selectOneMenu id="empleado" value="#{manejadorBean.empleadoSeleccionado}" converter="SelectItemToEntityConverter">
                                 <f:selectItem itemLabel="Seleccione..." itemValue=""/>
-                                <f:selectItems value="#{manejadorBean.listaEmpleados}"/>
+                                <f:selectItems value="#{manejadorBean.itemsEmpleados}" var="item" itemLabel="#{item.label}" itemValue="#{item}"/>
                             </p:selectOneMenu>
                             <br/>
                             <span class="ui-float-label">
@@ -45,10 +45,9 @@
 
                             <p:dataTable 
                                 id="tableItem" 
-                                value="#{manejadorBean.lista}" 
                                 var="item" 
                                 paginator="true"
-                                style="display: grid; width: 80%; align-content: flex-start" >
+                                style="width: 80%; align-content: flex-start" >
                                 <p:column headerText="Item" style="width: 70%">
                                     <h:outputLabel value= "Archivo1"/>
                                 </p:column>
@@ -61,12 +60,11 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listar()}" update="tableItem" style="height: 10%; padding: 5px" />
-                            <p:commandButton value="Añadir Item"  oncomplete="PF('viaje').show();" update=":dialog" style="height: 10%; padding: 5px" />
+
+                            <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="height: 10%; padding: 5px" />
 
                             <br/>
-
-                            <p:commandButton value="Ingresar" actionListener="#{manejadorBean.guardar()}"  />
+                            <p:commandButton value="Guardar" actionListener="#{manejadorBean.agregarItem()}" />
                             <h:link class="box-button_create" value = "Regresar" outcome = "index.xhtml" />
                             <br/>
                         </p:panel>
@@ -74,27 +72,18 @@
                 </section>
 
 
-                <p:dialog id="dialog" header="Datos a modificar" widgetVar="viaje"  resizable="false" modal="true" showEffect="clip" >
+                <p:dialog id="dialog" header="Agregar Item" widgetVar="viaje"  resizable="false" modal="true" showEffect="clip" >
 
                     <h:form>
-
-                        <span class="ui-float-label">
-                            <p:inputText id="id" value="#{manejadorBean.destino}"/>
-                            <p:outputLabel for="@previous" value="Nombre"/>
-                        </span>
-                        <br/>
-                        <span class="ui-float-label" >
-                            <p:inputText id="nombre" value="#{manejadorBean.nombreEmpleado}"/>
-                            <p:outputLabel for="@previous" value="Peso"/>
-                        </span>
-                        <br/>
-
-
+                        <label for="@next" >Producto y/o Servicio</label>
+                        <p:selectOneMenu id="empleado" value="#{manejadorBean.item}" >
+                            <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                            <f:selectItems value="#{manejadorBean.listaItem}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Agregar" actionListener="#{manejadorBean.agregarItem()}" />
                         <p:commandButton value="Cancelar" oncomplete="PF('viaje').hide();" />
                     </h:form>
                 </p:dialog>
-
-
 
                 <footer class="footer">
                     <p>Universidad Central</p>
