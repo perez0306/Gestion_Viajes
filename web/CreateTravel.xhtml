@@ -26,13 +26,13 @@
 
                         <p:panel header="Crear viaje"  >
 
-                            <label for="@next" >Empleado</label>
-                            <p:selectOneMenu id="empleado" value="#{manejadorBean.empleadoSeleccionado}" converter="SelectItemToEntityConverter">
+                            <label for="@next">Empleado</label>
+                            <p:selectOneMenu id="empleado" value="#{manejadorBean.empleadoSeleccionado}" converter="SelectItemToEntityConverter" style="margin-top: 15px; margin-left: 15px">
                                 <f:selectItem itemLabel="Seleccione..." itemValue=""/>
                                 <f:selectItems value="#{manejadorBean.itemsEmpleados}" var="item" itemLabel="#{item.label}" itemValue="#{item}"/>
                             </p:selectOneMenu>
                             <br/>
-                            <span class="ui-float-label">
+                            <span class="ui-float-label" style="margin-top: 20px;">
                                 <p:inputText id="fecha" value="#{manejadorBean.fechaViaje}"/>
                                 <p:outputLabel for="@previous" value="Fecha"/>
                             </span>
@@ -47,8 +47,18 @@
                                 id="tableItem" 
                                 var="item" 
                                 paginator="true"
-                                style="width: 80%; align-content: flex-start" >
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                rows="10"
+                                style="width: 100%; align-content: flex-start" >
+                                <p:column headerText="Codigo" style="width: 70%">
+                                    <h:outputLabel value= "Archivo1"/>
+                                </p:column>
                                 <p:column headerText="Item" style="width: 70%">
+                                    <h:outputLabel value= "Archivo1"/>
+                                </p:column>
+                                <p:column headerText="Categoria" style="width: 70%">
                                     <h:outputLabel value= "Archivo1"/>
                                 </p:column>
                                 <p:column headerText="Precio" style="width: 70%">
@@ -59,13 +69,9 @@
                                     <p:commandButton icon="ui-icon-trash"  update="tableItem"/>
                                 </p:column>
                             </p:dataTable>
-
-
-                            <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="height: 10%; padding: 5px" />
-
-                            <br/>
-                            <p:commandButton value="Guardar" actionListener="#{manejadorBean.agregarItem()}" />
-                            <h:link class="box-button_create" value = "Regresar" outcome = "index.xhtml" />
+                            
+                            <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="margin-top: 30px; margin-left: 35%" />
+                            <p:commandButton value="Guardar" actionListener="#{manejadorBean.agregarItem()}" style="margin-left: 5%; width: 130px"/>
                             <br/>
                         </p:panel>
                     </h:form>
@@ -85,6 +91,10 @@
                     </h:form>
                 </p:dialog>
 
+                <div class="box-button">
+                    <h:link  class="box-button_create" value = "Regresar" outcome = "index.xhtml" />
+                </div>
+
                 <footer class="footer">
                     <p>Universidad Central</p>
                     <p>Realizado por Omar Andres Perez Gil - Estudiante de ingenieria de sistemas</p>
@@ -101,9 +111,9 @@
                     grid-template-areas: 
                         "head head head"
                         "left form right"
-                        "left buttons right"
+                        "left form right"
                         "foot foot foot";
-                    grid-template-rows: 1fr 6fr 2fr 1fr ;
+                    grid-template-rows: 1fr 6fr  1fr ;
                     grid-template-columns: 1fr 3fr 1fr;
                 }
                 .header{
@@ -124,6 +134,36 @@
                     display: grid;
                     grid-area: form;
                     width: 100%;
+                    height: 80%;
+                    align-items: center;
+                }
+                .box-button{
+                    grid-area: left;
+                    display: grid;
+                    grid-template-rows: 2fr 5fr 2fr;
+                    grid-template-columns: 1fr;
+                    align-self: center;
+                    align-items: grid-center;
+                    margin-top: 30px;
+                }
+                .box-button_create{
+                    display: grid;
+                    font-size: 20px;
+                    text-decoration: none;
+                    color: black;
+                    border-width: 2px;
+                    border-style: outset;
+                    padding: 10px;
+                    border-radius: 20px;
+                    width: 25%;
+                    height: 15;
+                    background-color: buttonface;
+                    justify-content: center;
+                    align-content: center;
+                    margin-left: 15px;
+                }
+                .box-button_create:hover{
+                    background-color: rgb(93, 181, 111, .5);
                 }
                 .footer{
                     grid-area: foot;

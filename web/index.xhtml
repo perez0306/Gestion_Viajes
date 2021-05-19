@@ -35,16 +35,21 @@
                         value="#{manejadorBean.listaArchivos}" 
                         var="file" 
                         paginator="true"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                        rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                        rows="10"
                         style="display: grid; width: 80%; align-content: flex-start  " >
+                        
                         <p:column headerText="Nombre Archivo" style="width: 70%">
                             <p:outputLabel value="#{file.nombreArchivo}"/>
                         </p:column>
                         <p:column headerText="Acciones" style="width:30%">
-                            <p:commandButton icon="ui-icon-pencil" />
-                            <p:commandButton icon="ui-icon-trash"  update="tableFile"/>
+                            <p:commandButton icon="ui-icon-pencil" action="#{manejadorBean.abrirArchivo(file)}"/>
+                            <p:commandButton icon="ui-icon-trash" action="#{manejadorBean.eliminarArchivo(file)}" update="tableFile"/>
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listaArchivos()}" update="tableFile" style="height: 30%" />
+                    <p:commandButton value="Actualizar lista" actionListener="#{manejadorBean.listarArchivos()}" update="tableFile" style="height: 30%" />
                 </h:form>
 
 

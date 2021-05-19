@@ -9,6 +9,7 @@ import database.Conexiones;
 import dto.File;
 import dto.Item;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,7 +26,7 @@ public class OperFile implements Operaciones<File> {
 
     public OperFile() {
     }
-    
+
     @Override
     public int insert(File dato) {
         return 0;
@@ -44,8 +45,9 @@ public class OperFile implements Operaciones<File> {
                 try {
                     while (respuesta.next()) {
                         File file = new File(
-                            respuesta.getString("nombre"),
-                            respuesta.getString("fecha")
+                                respuesta.getInt("id"),
+                                respuesta.getString("nombre"),
+                                respuesta.getString("fecha")
                         );
                         listaFile.add(file);
                     }
@@ -68,6 +70,28 @@ public class OperFile implements Operaciones<File> {
 
     @Override
     public int delete(int id) {
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+        try {
+            String sql = "DELETE FROM archivos WHERE id=?";
+            PreparedStatement ps = cActiva.prepareStatement(sql);
+            if (cActiva != null) {
+                try {
+                    ps.setInt(1, id);
+                    System.out.println("Usuario eliminado..."+ id);
+                    return ps.executeUpdate();
+                } catch (SQLException ex) {
+                    System.out.println("Error al elminar archivo....");
+                    Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    ps.close();
+                    c.desconectase(cActiva);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al eliminar archivo: PreparedStatement...");
+            Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, e);
+        }
         return 0;
     }
 

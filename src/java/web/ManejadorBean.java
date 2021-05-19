@@ -22,8 +22,7 @@ import logica.OperFile;
 import logica.OperItem;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
-import utilidades.EscrituraArchivo;
-import utilidades.LecturaArchivo;
+import utilidades.GestionArchivos;
 
 /**
  *
@@ -171,6 +170,8 @@ public final class ManejadorBean implements Serializable, Converter {
 
     @PostConstruct
     public void init() {
+        actualizarPlanta();
+        listarItems();
     }
 
     public void listarItems() {
@@ -186,18 +187,14 @@ public final class ManejadorBean implements Serializable, Converter {
         }
     }
 
-    public void agregarItem() {
-        System.out.println("----------------------------------------\n" + this.item + "--------------------------------\n\n\n\n\n\n\n\n");
-    }
-
     public void guardarViaje() {
-        EscrituraArchivo escritura = new EscrituraArchivo();
+        GestionArchivos escritura = new GestionArchivos();
         escritura.escribirArchivo(this.empleadoSeleccionado, this.destino, this.destino, "Viaje3");
 
     }
 
     public void actualizarPlanta() {
-        LecturaArchivo plantaTH = new LecturaArchivo();
+        GestionArchivos plantaTH = new GestionArchivos();
         List<Empleado> empleados = plantaTH.leerArchivoTH("C:\\BD\\DatosProyect\\PlantaTH.txt");
         itemsEmpleados = new ArrayList<>();
         if (empleados != null) {
@@ -207,13 +204,8 @@ public final class ManejadorBean implements Serializable, Converter {
             }
         }
     }
-
-    public void listaItems() {
-        OperFile oper = new OperFile();
-        setListaArchivos(oper.getAll());
-    }
-
-    public void listaArchivos() {
+    
+    public void listarArchivos() {
         OperFile oper = new OperFile();
         setListaArchivos(oper.getAll());
     }
@@ -265,6 +257,21 @@ public final class ManejadorBean implements Serializable, Converter {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Se presentó inconveniente al editar el producto, intente mas tarde "));
         }
+    }
+    
+    public void eliminarArchivo(File f){
+        GestionArchivos archivo = new GestionArchivos();
+        archivo.eliminarArchivo(f.getNombreArchivo());
+        
+        OperFile bdFile = new OperFile();
+        bdFile.delete(f.getId());
+        
+    }
+    
+    public void abrirArchivo(File f){
+        GestionArchivos archivo = new GestionArchivos();
+        archivo.abrirArchivo(f.getNombreArchivo());
+        
     }
     
     public void openLevel1() {

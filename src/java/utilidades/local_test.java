@@ -5,13 +5,8 @@
  */
 package utilidades;
 
-import dto.Empleado;
-import dto.File;
 import dto.Item;
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.model.SelectItem;
-import logica.OperFile;
 import web.ManejadorBean;
 
 /**
@@ -34,7 +29,7 @@ public class local_test {
 
         //   manejador.actualizarPlanta();
         // manejador.guardarViaje();
-        EscrituraArchivo escritura = new EscrituraArchivo();
+        GestionArchivos escritura = new GestionArchivos();
         Item i = new Item(0, "nombre", "categoria", 0);
         SelectItem item = new SelectItem(i, "nombre");
         escritura.escribirArchivo(item, "Hola", "hola", "Viaje3");

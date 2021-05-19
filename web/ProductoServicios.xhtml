@@ -18,13 +18,13 @@
                     <p class="header-title">Gestion de viajes</p>
                 </header>
 
-                <h:form class="createForm" style="display: flex; justify-content: center">
-                    <p:messages id="messages" showDetail="true" closable="true">
+                <h:form class="createForm" >
+                    <p:messages id="messages"  showDetail="true" closable="true">
                         <p:autoUpdate/>
                     </p:messages>
 
                     <p:panel header="Crear producto" 
-                             style="width: 40%" >
+                             >
                         <br/>
                         <span class="ui-float-label" >
                             <p:inputText id="nombre" value="#{manejadorBean.nombreItem}"/>
@@ -57,11 +57,16 @@
                                  value="#{manejadorBean.listaProductos}" 
                                  style="margin-bottom:20px" 
                                  var="producto"  
+                                 editable="true"
                                  paginator="true"
-                                 editable="true">
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                 rows="10"
+                                 >
 
 
-                        <p:column headerText="ID" >
+                        <p:column headerText="Codigo" >
                             <h:outputLabel value= "#{producto.id}"/>
                         </p:column>
 
@@ -88,18 +93,12 @@
 
 
 
-                <p:dialog id="dialog" header="Datos a modificar" widgetVar="producto"  resizable="false" modal="true" showEffect="clip" >
+                <p:dialog id="dialog" header="Datos a modificar - ID #{manejadorBean.idItem}" widgetVar="producto"  resizable="false" modal="true" showEffect="clip" >
                     <h:form id="formDialog"  >
 
-                        <span class="ui-float-label" style="margin-top: 20px; align-items: center;">
-                            <p:outputLabel value="ID  - #{manejadorBean.idItem}" style="font-size: 40; 
-                                           font-family: sans-serif; 
-                                           color: black;"/>
-                        </span>
-                        <br/>
                         <span class="ui-float-label" style="margin-top: 15px;">
-                            <p:inputText id="nombre" value="#{manejadorBean.nombreItem}"/>
-                            <p:outputLabel for="@previous" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{manejadorBean.nombreItem}" />
+                            <p:outputLabel for="@previous" value="Nombre" />
                         </span>
                         <br/>
                         <h4 style="padding: 0; margin: 0">Categoria</h4>
@@ -121,7 +120,9 @@
                     </h:form>
                 </p:dialog>
 
-                <h:link class="box-button_create" value = "Regresar" outcome = "index.xhtml" />
+                <div class="box-button">
+                    <h:link  class="box-button_create" value = "Regresar" outcome = "index.xhtml" />
+                </div>
 
                 <div class="footer">
                     <p>Universidad Central</p>
@@ -159,6 +160,9 @@
                 }
                 .createForm{
                     grid-area: create;
+                    display: grid;
+                    grid-template-rows: 1fr 5fr;
+                    grid-template-columns: 1fr;
                 }
                 .table{
                     grid-area: table;
@@ -169,6 +173,34 @@
                 }
                 .tableList-table{
                     display: grid;  
+                }
+                .box-button{
+                    grid-area: left;
+                    display: grid;
+                    grid-template-rows: 2fr 5fr 2fr;
+                    grid-template-columns: 1fr;
+                    align-self: center;
+                    align-items: grid-center;
+                    margin-top: 30px;
+                }
+                .box-button_create{
+                    display: grid;
+                    font-size: 20px;
+                    text-decoration: none;
+                    color: black;
+                    border-width: 2px;
+                    border-style: outset;
+                    padding: 10px;
+                    border-radius: 20px;
+                    width: 25%;
+                    height: 15;
+                    background-color: buttonface;
+                    justify-content: center;
+                    align-content: center;
+                    margin-left: 15px;
+                }
+                .box-button_create:hover{
+                    background-color: rgb(93, 181, 111, .5);
                 }
                 .footer{
                     grid-area: foot;

@@ -10,15 +10,25 @@ package dto;
  * @author CARITO
  */
 public class File {
+    private int id;
     private String nombreArchivo;
     private String fechaArchivo;
 
     public File() {
     }
 
-    public File(String nombreArchivo, String fechaArchivo) {
+    public File(int id, String nombreArchivo, String fechaArchivo) {
+        this.id = id;
         this.nombreArchivo = nombreArchivo;
         this.fechaArchivo = fechaArchivo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombreArchivo() {
@@ -39,7 +49,7 @@ public class File {
 
     @Override
     public String toString() {
-        return "File{" + "nombreArchivo=" + nombreArchivo + ", fechaArchivo=" + fechaArchivo + '}';
+        return "File{ id=" + id + "nombreArchivo=" + nombreArchivo + ", fechaArchivo=" + fechaArchivo + '}';
     }
  
 }
