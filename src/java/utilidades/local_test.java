@@ -5,8 +5,10 @@
  */
 package utilidades;
 
+import dto.File;
 import dto.Item;
 import javax.faces.model.SelectItem;
+import logica.OperFile;
 import web.ManejadorBean;
 
 /**
@@ -17,22 +19,21 @@ public class local_test {
 
     public static void main(String[] args) {
 
-        /* OperFile oper = new OperFile();
-        List<File> file =oper.getAll();
-        
-        
-        for (int i = 0; i < file.size(); i++) {
-            System.out.println(file.get(i).toString());
-        
-       }*/
-        web.ManejadorBean manejador = new ManejadorBean();
 
-        //   manejador.actualizarPlanta();
-        // manejador.guardarViaje();
+        web.ManejadorBean manejador = new ManejadorBean();
+        logica.OperFile file = new OperFile();
+        String nombre = "Viaje4";
+        File f = new File();
+        
+        f.setNombreArchivo(nombre);
+        f.setFechaArchivo("12/20/2000");
+        
         GestionArchivos escritura = new GestionArchivos();
         Item i = new Item(0, "nombre", "categoria", 0);
         SelectItem item = new SelectItem(i, "nombre");
-        escritura.escribirArchivo(item, "Hola", "hola", "Viaje3");
-
+        
+  
+        escritura.escribirArchivo(item, "Prueba", "prueba", "Viaje4");
+        file.insert(f);
     }
 }
