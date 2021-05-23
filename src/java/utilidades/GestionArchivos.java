@@ -6,6 +6,7 @@
 package utilidades;
 
 import dto.Empleado;
+import dto.Item;
 import java.awt.Desktop;
 import java.io.*;
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ public class GestionArchivos {
 
     FileReader fr = null;
     BufferedReader br = null;
-    BufferedWriter bw = null;
     String ruta = "C:\\BD\\DatosProyect\\HistorialViajes\\";
     String extension = ".txt";
+    PrintStream ps = null;
 
     public List<Empleado> leerArchivoTH(String nombreDocumento) {
         try {
@@ -58,23 +59,24 @@ public class GestionArchivos {
         return null;
     }
 
-    public void escribirArchivo(SelectItem item, String destino, String fecha, String nombre) {
+    public void escribirArchivo(Empleado empleado, String destino, String fecha, String nombre) {
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(ruta + nombre + extension));
 
-            bw.write("Item: " + item);
-            bw.newLine();
-            bw.write("Destino: " + destino);
-            bw.newLine();
-            bw.write("Fecha: " + fecha);
+            ps = new PrintStream(ruta + nombre + extension);
+
+            ps.println("Empleado - " + empleado.getNombreEmpleado());
+            ps.println("Rol - " + empleado.getRol());
+            ps.println("Codigo - " + empleado.getId());
+            ps.println("Destino - " + destino);
+            ps.println("Fecha - " + fecha);
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (null != bw) {
-                    bw.close();
+                if (null != ps) {
+                    ps.close();
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();

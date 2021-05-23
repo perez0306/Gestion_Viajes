@@ -5,6 +5,7 @@
  */
 package utilidades;
 
+import dto.Empleado;
 import dto.File;
 import dto.Item;
 import javax.faces.model.SelectItem;
@@ -29,11 +30,29 @@ public class local_test {
         f.setFechaArchivo("12/20/2000");
         
         GestionArchivos escritura = new GestionArchivos();
-        Item i = new Item(0, "nombre", "categoria", 0);
-        SelectItem item = new SelectItem(i, "nombre");
-        
+        Empleado i = new Empleado("Omar", 123, "Ingeniero");
+        SelectItem item = new SelectItem(i, i.getNombreEmpleado());
+        Empleado items = (Empleado) item.getValue();
   
-        escritura.escribirArchivo(item, "Prueba", "prueba", "Viaje4");
+        escritura.escribirArchivo(items, "Prueba", "prueba", "Viaje4");
         file.insert(f);
     }
 }
+
+
+
+
+/*@Test
+    public void insertarObjetoOKFaker(){
+        Faker faker = new Faker(Locale.ITALY);
+        
+        OperEstudiante oper = new OperEstudiante();
+        Estudiante e = new Estudiante();
+        long dato = faker.number().numberBetween(0L, 1L);
+        
+        e.setActivo(new Integer(""+dato));
+        String papell  =  faker.name().lastName();
+        e.setApellido(papell);
+        String pnombre  =  faker.name().firstName();
+        e.setNombre(pnombre);
+        long iden = faker.num}*/

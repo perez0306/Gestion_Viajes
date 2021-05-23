@@ -6,7 +6,9 @@ import dto.Item;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +17,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import logica.OperFile;
 import logica.OperItem;
@@ -28,12 +28,10 @@ import utilidades.GestionArchivos;
  *
  * @author Vinni
  */
-@FacesConverter(value = "SelectItemToEntityConverter")
 @ManagedBean
 @SessionScoped
-public final class ManejadorBean implements Serializable, Converter {
+public final class ManejadorBean implements Serializable {
 
-    private String nombreEmpleado;
     private String destino;
     private Date fechaViaje;
     private List<Item> itemsActivos;
@@ -47,6 +45,15 @@ public final class ManejadorBean implements Serializable, Converter {
     private String nombreItem;
     private String categoriaItem;
     private long precioItem;
+    private String nombreArchivo;
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
 
     public List<Item> getListaProductos() {
         return listaProductos;
@@ -55,7 +62,7 @@ public final class ManejadorBean implements Serializable, Converter {
     public void setListaProductos(List<Item> listaProductos) {
         this.listaProductos = listaProductos;
     }
-    
+
     public int getIdItem() {
         return idItem;
     }
@@ -87,7 +94,7 @@ public final class ManejadorBean implements Serializable, Converter {
     public void setPrecioItem(long precioItem) {
         this.precioItem = precioItem;
     }
-   
+
     public SelectItem getItem() {
         return item;
     }
@@ -152,14 +159,6 @@ public final class ManejadorBean implements Serializable, Converter {
         this.fechaViaje = fechaViaje;
     }
 
-    public String getNombreEmpleado() {
-        return nombreEmpleado;
-    }
-
-    public void setNombreEmpleado(String nombreEmpleado) {
-        this.nombreEmpleado = nombreEmpleado;
-    }
-
     /**
      * Creates a new instance of ManejadorBean
      */
@@ -181,41 +180,61 @@ public final class ManejadorBean implements Serializable, Converter {
         listaItem = new ArrayList<>();
         if (lista != null) {
             for (Item producto : lista) {
-                SelectItem item = new SelectItem(producto.getId(), producto.getNombre());
+                SelectItem item = new SelectItem(producto, producto.getNombre());
                 listaItem.add(item);
             }
         }
     }
 
-    public void guardarViaje() {
+    public void guardarViaje(SelectItem empleadoSeleccionado) {
+        System.out.println(this.getEmpleadoSeleccionado());
+        System.out.println(empleadoSeleccionado);
         GestionArchivos escritura = new GestionArchivos();
-        escritura.escribirArchivo(this.empleadoSeleccionado, this.destino, this.destino, "Viaje3");
+        OperFile oper = new OperFile();
+        File file = new File();
+        Calendar fecha = new GregorianCalendar();
+
+        //usando el método get y el parámetro correspondiente                                                     
+        int año = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH);
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+
+        Empleado empleado = (Empleado) this.empleadoSeleccionado.getValue();
+        escritura.escribirArchivo(empleado, this.destino, this.destino, this.nombreArchivo);
+
+        file.setNombreArchivo(this.nombreArchivo);
+        file.setFechaArchivo(dia + "/" + mes + "/" + año);
+        oper.insert(file);
 
     }
 
     public void actualizarPlanta() {
         GestionArchivos plantaTH = new GestionArchivos();
         List<Empleado> empleados = plantaTH.leerArchivoTH("C:\\BD\\DatosProyect\\PlantaTH.txt");
-        itemsEmpleados = new ArrayList<>();
+        this.itemsEmpleados = new ArrayList<>();
         if (empleados != null) {
             for (Empleado empleado : empleados) {
-                SelectItem item = new SelectItem(empleado.getId(), empleado.getNombreEmpleado());
-                itemsEmpleados.add(item);
+                SelectItem item = new SelectItem(empleado, empleado.getNombreEmpleado());
+                this.itemsEmpleados.add(item);
             }
         }
     }
-    
+
+    public void agregarItem() {
+
+    }
+
     public void listarArchivos() {
         OperFile oper = new OperFile();
         setListaArchivos(oper.getAll());
     }
-    
+
     public void listarProductos() {
         OperItem oper = new OperItem();
         setListaProductos(oper.getAll());
     }
-    
-    public void eliminarProducto(int id){
+
+    public void eliminarProducto(int id) {
         OperItem oper = new OperItem();
         if (oper.delete(id) > 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Se elimino correctamente"));
@@ -223,7 +242,7 @@ public final class ManejadorBean implements Serializable, Converter {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Se presentó inconveniente en la eliminacion, intente mas tarde..."));
         }
     }
-    
+
     public void guardarProducto() {
         OperItem oper = new OperItem();
         Item e = new Item(
@@ -237,14 +256,14 @@ public final class ManejadorBean implements Serializable, Converter {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Se presentó inconveniente en el almacenamiento, intente mas tarde "));
         }
     }
-    
-    public void leerProducto(Item p){
-        this.idItem=p.getId();
-        this.nombreItem=p.getNombre();
-        this.categoriaItem=p.getCategoria();
-        this.precioItem=p.getPrecio();      
+
+    public void leerProducto(Item p) {
+        this.idItem = p.getId();
+        this.nombreItem = p.getNombre();
+        this.categoriaItem = p.getCategoria();
+        this.precioItem = p.getPrecio();
     }
-    
+
     public void editarProducto() {
         OperItem oper = new OperItem();
         Item e = new Item(
@@ -258,22 +277,22 @@ public final class ManejadorBean implements Serializable, Converter {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Se presentó inconveniente al editar el producto, intente mas tarde "));
         }
     }
-    
-    public void eliminarArchivo(File f){
+
+    public void eliminarArchivo(File f) {
         GestionArchivos archivo = new GestionArchivos();
         archivo.eliminarArchivo(f.getNombreArchivo());
-        
+
         OperFile bdFile = new OperFile();
         bdFile.delete(f.getId());
-        
+
     }
-    
-    public void abrirArchivo(File f){
+
+    public void abrirArchivo(File f) {
         GestionArchivos archivo = new GestionArchivos();
         archivo.abrirArchivo(f.getNombreArchivo());
-        
+
     }
-    
+
     public void openLevel1() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
@@ -284,17 +303,4 @@ public final class ManejadorBean implements Serializable, Converter {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Data Returned", event.getObject().toString()));
     }
 
-    @Override
-    public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        String s = "";
-        if (o != null) {
-            s = o.toString();
-        }
-        return s;
-    }
 }

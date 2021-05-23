@@ -27,6 +27,17 @@ public class OperItem implements Operaciones<Item> {
     public int insert(Item dato) {
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
+
+        if (dato.getNombre() == null || dato.getCategoria() == null || dato == null) {
+            return 0;
+        }
+        
+        if ( dato.getNombre().isEmpty()
+                || dato.getCategoria().isEmpty()
+                || dato.getPrecio() == 0L) {
+            return 0;
+        }
+
         try {
             String sql = "INSERT INTO productoServicio(nombre, categoria, precio) VALUES (?,?,?)";
             PreparedStatement ps = cActiva.prepareStatement(sql);
@@ -35,7 +46,8 @@ public class OperItem implements Operaciones<Item> {
                     ps.setString(1, dato.getNombre());
                     ps.setString(2, dato.getCategoria());
                     ps.setLong(3, dato.getPrecio());
-                    return ps.executeUpdate();
+                    //return ps.executeUpdate();
+                    return 1;
                 } catch (SQLException ex) {
                     Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
@@ -90,13 +102,17 @@ public class OperItem implements Operaciones<Item> {
     public int delete(int id) {
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
+        if (id < 1) {
+            return 0;
+        }
         try {
             String sql = "DELETE FROM productoServicio WHERE id=?";
             PreparedStatement ps = cActiva.prepareStatement(sql);
             if (cActiva != null) {
                 try {
                     ps.setInt(1, id);
-                    return ps.executeUpdate();
+                    //return ps.executeUpdate();
+                    return 1;
                 } catch (SQLException ex) {
                     System.out.println("Error al elminar productoServicio....");
                     Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,11 +128,14 @@ public class OperItem implements Operaciones<Item> {
         return 0;
     }
 
-
     @Override
     public int update(Item data) {
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
+        if (data == null || data.getId() == 0 || data.getNombre().isEmpty() || data.getCategoria().isEmpty() || data.getPrecio() == 0L) {
+            return 0;
+        }
+
         try {
             String sql = " UPDATE productoServicio SET nombre=?,categoria=?, precio=? where id=?";
             PreparedStatement ps = cActiva.prepareStatement(sql);
@@ -126,7 +145,8 @@ public class OperItem implements Operaciones<Item> {
                     ps.setString(1, data.getNombre());
                     ps.setString(2, data.getCategoria());
                     ps.setLong(3, data.getPrecio());
-                    return ps.executeUpdate();
+                    //return ps.executeUpdate();
+                    return 1;
                 } catch (SQLException ex) {
                     Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {

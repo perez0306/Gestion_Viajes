@@ -15,10 +15,10 @@ import java.util.Date;
 public class Viaje {
     private Empleado empleado;
     private String destino;
-    private Date fechaViaje;
+    private String fechaViaje;
     private ArrayList<Item> items;
 
-    public Viaje(Empleado empleado, String destino, Date fechaViaje, ArrayList<Item> items) {
+    public Viaje(Empleado empleado, String destino, String fechaViaje, ArrayList<Item> items) {
         this.empleado = empleado;
         this.destino = destino;
         this.fechaViaje = fechaViaje;
@@ -44,11 +44,11 @@ public class Viaje {
         this.destino = destino;
     }
 
-    public Date getFechaViaje() {
+    public String getFechaViaje() {
         return fechaViaje;
     }
 
-    public void setFechaViaje(Date fechaViaje) {
+    public void setFechaViaje(String fechaViaje) {
         this.fechaViaje = fechaViaje;
     }
 

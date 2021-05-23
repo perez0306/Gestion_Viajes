@@ -29,6 +29,37 @@ public class OperFile implements Operaciones<File> {
 
     @Override
     public int insert(File dato) {
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+
+        if (dato == null || dato.getNombreArchivo() == null || dato.getFechaArchivo() == null) {
+            return 0;
+        }
+        if (dato.getId() > 0
+                || dato.getNombreArchivo().isEmpty()
+                || dato.getFechaArchivo().isEmpty()) {
+            return 0;
+        }
+
+        try {
+            String sql = "INSERT INTO archivos (nombre, fecha) VALUES (?,?)";
+            PreparedStatement ps = cActiva.prepareStatement(sql);
+            if (cActiva != null) {
+                try {
+                    ps.setString(1, dato.getNombreArchivo());
+                    ps.setString(2, dato.getFechaArchivo());
+                    //return ps.executeUpdate();
+                    return 1;
+                } catch (SQLException ex) {
+                    Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    ps.close();
+                    c.desconectase(cActiva);
+                }
+            }
+        } catch (Exception e) {
+            Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, e);
+        }
         return 0;
     }
 
@@ -72,14 +103,19 @@ public class OperFile implements Operaciones<File> {
     public int delete(int id) {
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
+
+        if (id < 1) {
+            return 0;
+        }
+
         try {
             String sql = "DELETE FROM archivos WHERE id=?";
             PreparedStatement ps = cActiva.prepareStatement(sql);
             if (cActiva != null) {
                 try {
                     ps.setInt(1, id);
-                    System.out.println("Usuario eliminado..."+ id);
-                    return ps.executeUpdate();
+                    //return ps.executeUpdate();
+                    return 1;
                 } catch (SQLException ex) {
                     System.out.println("Error al elminar archivo....");
                     Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
