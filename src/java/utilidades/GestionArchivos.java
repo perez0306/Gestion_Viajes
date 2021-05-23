@@ -26,6 +26,13 @@ public class GestionArchivos {
     PrintStream ps = null;
 
     public List<Empleado> leerArchivoTH(String nombreDocumento) {
+        if (nombreDocumento == null) {
+            return null;
+        }
+        if (nombreDocumento.isEmpty()) {
+            return null;
+        }
+
         try {
             fr = new FileReader(nombreDocumento);
             br = new BufferedReader(fr);
@@ -59,7 +66,14 @@ public class GestionArchivos {
         return null;
     }
 
-    public void escribirArchivo(Empleado empleado, String destino, String fecha, String nombre) {
+    public int escribirArchivo(Empleado empleado, String destino, String fecha, String nombre) {
+
+        if (empleado == null || destino == null || fecha == null || nombre == null) {
+            return 0;
+        }
+        if (destino.isEmpty() || fecha.isEmpty() || nombre.isEmpty() || empleado.getNombreEmpleado().isEmpty() || empleado.getRol().isEmpty()) {
+            return 0;
+        }
 
         try {
 
@@ -70,7 +84,7 @@ public class GestionArchivos {
             ps.println("Codigo - " + empleado.getId());
             ps.println("Destino - " + destino);
             ps.println("Fecha - " + fecha);
-
+            return 1;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -82,28 +96,46 @@ public class GestionArchivos {
                 e2.printStackTrace();
             }
         }
+        return 0;
     }
 
-    public void eliminarArchivo(String nombre) {
+    public int eliminarArchivo(String nombre) {
+
+        if (nombre == null) {
+            return 0;
+        }
+        if (nombre.isEmpty()) {
+            return 0;
+        }
         File archivo = new File(ruta + nombre + extension);
         if (archivo.exists()) {
             if (archivo.delete()) {
                 System.out.println("El fichero ha sido borrado satisfactoriamente");
+                return 1;
             } else {
                 System.out.println("El fichero no puede ser borrado");
+                return 0;
             }
         } else {
             System.out.println("No existe el fichero");
         }
-
+        return 0;
     }
 
-    public void abrirArchivo(String nombre) {
+    public int abrirArchivo(String nombre) {
+         if (nombre == null) {
+            return 0;
+        }
+        if (nombre.isEmpty()) {
+            return 0;
+        }
         try {
             File objetofile = new File(ruta + nombre + extension);
             Desktop.getDesktop().open(objetofile);
+            return 1;
         } catch (IOException ex) {
             System.out.println(ex);
         }
+        return 0;
     }
 }
