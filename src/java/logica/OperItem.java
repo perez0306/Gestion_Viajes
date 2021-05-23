@@ -46,8 +46,8 @@ public class OperItem implements Operaciones<Item> {
                     ps.setString(1, dato.getNombre());
                     ps.setString(2, dato.getCategoria());
                     ps.setLong(3, dato.getPrecio());
-                    //return ps.executeUpdate();
-                    return 1;
+                    return ps.executeUpdate();
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
@@ -111,8 +111,8 @@ public class OperItem implements Operaciones<Item> {
             if (cActiva != null) {
                 try {
                     ps.setInt(1, id);
-                    //return ps.executeUpdate();
-                    return 1;
+                    return ps.executeUpdate();
+                    
                 } catch (SQLException ex) {
                     System.out.println("Error al elminar productoServicio....");
                     Logger.getLogger(OperItem.class.getName()).log(Level.SEVERE, null, ex);
@@ -145,8 +145,8 @@ public class OperItem implements Operaciones<Item> {
                     ps.setString(1, data.getNombre());
                     ps.setString(2, data.getCategoria());
                     ps.setLong(3, data.getPrecio());
-                    //return ps.executeUpdate();
-                    return 1;
+                    return ps.executeUpdate();
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(OperFile.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {

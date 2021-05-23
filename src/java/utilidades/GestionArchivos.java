@@ -9,9 +9,10 @@ import dto.Empleado;
 import dto.Item;
 import java.awt.Desktop;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.model.SelectItem;
 
 /**
  *
@@ -66,7 +67,7 @@ public class GestionArchivos {
         return null;
     }
 
-    public int escribirArchivo(Empleado empleado, String destino, String fecha, String nombre) {
+    public int escribirArchivo(Empleado empleado, String destino, String fecha, String nombre, List<Item> lista, long suma) {
 
         if (empleado == null || destino == null || fecha == null || nombre == null) {
             return 0;
@@ -77,13 +78,22 @@ public class GestionArchivos {
 
         try {
 
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             ps = new PrintStream(ruta + nombre + extension);
-
+            ps.println("-----------" + dtf.format(LocalDateTime.now()) + "---------------");
             ps.println("Empleado - " + empleado.getNombreEmpleado());
             ps.println("Rol - " + empleado.getRol());
-            ps.println("Codigo - " + empleado.getId());
             ps.println("Destino - " + destino);
             ps.println("Fecha - " + fecha);
+            ps.println("Item:");
+            if (!lista.isEmpty()) {
+                for (int i = 0; i < lista.size(); i++) {
+                    ps.println("- " + lista.get(i).getNombre() + "  $" + lista.get(i).getPrecio());
+                }
+
+            }
+            ps.println("TOTAL: $" + suma);
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,7 +133,7 @@ public class GestionArchivos {
     }
 
     public int abrirArchivo(String nombre) {
-         if (nombre == null) {
+        if (nombre == null) {
             return 0;
         }
         if (nombre.isEmpty()) {

@@ -5,11 +5,13 @@
  */
 package dto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author CARITO
  */
-public class Item {
+public class Item implements Serializable{
 
     private int id;
     private String nombre;

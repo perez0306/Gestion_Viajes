@@ -3,6 +3,7 @@ package web;
 import dto.Empleado;
 import dto.File;
 import dto.Item;
+import dto.Viaje;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import logica.OperFile;
@@ -45,7 +45,16 @@ public final class ManejadorBean implements Serializable {
     private String nombreItem;
     private String categoriaItem;
     private long precioItem;
+    private long suma;
     private String nombreArchivo;
+
+    public long getSuma() {
+        return suma;
+    }
+
+    public void setSuma(long suma) {
+        this.suma = suma;
+    }
 
     public String getNombreArchivo() {
         return nombreArchivo;
@@ -173,6 +182,11 @@ public final class ManejadorBean implements Serializable {
         listarItems();
     }
 
+    public void sumar(){
+        Viaje viaje = new Viaje();
+        this.suma = viaje.sumarItems(itemsActivos);
+    }
+    
     public void listarItems() {
         OperItem oper = new OperItem();
         List<Item> lista = new ArrayList<Item>();
@@ -199,12 +213,13 @@ public final class ManejadorBean implements Serializable {
         int mes = fecha.get(Calendar.MONTH);
         int dia = fecha.get(Calendar.DAY_OF_MONTH);
 
-        Empleado empleado = (Empleado) this.empleadoSeleccionado.getValue();
-        escritura.escribirArchivo(empleado, this.destino, this.destino, this.nombreArchivo);
+        Long empleado = (Long) this.empleadoSeleccionado.getValue();
+        System.out.println("Id - "+empleado);
+        /*escritura.escribirArchivo(empleado, this.destino, this.destino, this.nombreArchivo, this.itemsActivos, this.suma);
 
         file.setNombreArchivo(this.nombreArchivo);
         file.setFechaArchivo(dia + "/" + mes + "/" + año);
-        oper.insert(file);
+        oper.insert(file);*/
 
     }
 
@@ -214,7 +229,7 @@ public final class ManejadorBean implements Serializable {
         this.itemsEmpleados = new ArrayList<>();
         if (empleados != null) {
             for (Empleado empleado : empleados) {
-                SelectItem item = new SelectItem(empleado, empleado.getNombreEmpleado());
+                SelectItem item = new SelectItem(empleado.getId(), empleado.getNombreEmpleado());
                 this.itemsEmpleados.add(item);
             }
         }

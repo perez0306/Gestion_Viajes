@@ -5,20 +5,21 @@
  */
 package dto;
 
-import java.util.ArrayList;
-import java.util.Date;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
  * @author CARITO
  */
-public class Viaje {
+public class Viaje implements Serializable{
     private Empleado empleado;
     private String destino;
     private String fechaViaje;
-    private ArrayList<Item> items;
+    private List<Item> items;
 
-    public Viaje(Empleado empleado, String destino, String fechaViaje, ArrayList<Item> items) {
+    public Viaje(Empleado empleado, String destino, String fechaViaje, List<Item> items) {
         this.empleado = empleado;
         this.destino = destino;
         this.fechaViaje = fechaViaje;
@@ -52,13 +53,23 @@ public class Viaje {
         this.fechaViaje = fechaViaje;
     }
 
-    public ArrayList<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
+    
+    
+    public long sumarItems(List<Item> lista ){
+        long suma = 0;
+        for (int i = 0; i < lista.size(); i++) {
+            suma += lista.get(i).getPrecio();
+        }
+        return suma;
+    }
+    
 
     @Override
     public String toString() {

@@ -27,9 +27,10 @@
                         <p:panel header="Crear viaje"  >
 
                             <label for="@next">Empleado</label>
-                            <p:selectOneMenu id="empleado" value="#{manejadorBean.empleadoSeleccionado}" converter="SelectItemToEntityConverter" style="margin-top: 15px; margin-left: 15px">
+                            <p:selectOneMenu id="empleado" value="#{manejadorBean.empleadoSeleccionado}"  style="margin-top: 15px; margin-left: 15px">
                                 <f:selectItem itemLabel="Seleccione..." itemValue=""/>
-                                <f:selectItems value="#{manejadorBean.itemsEmpleados}" var="item" itemLabel="#{item.label}" itemValue="#{item}"/>
+                                <f:selectItems value="#{manejadorBean.itemsEmpleados}"/>
+                                <p:ajax event="change" update="@this" />
                             </p:selectOneMenu>
                             <br/>
                             <span class="ui-float-label" style="margin-top: 20px;">
@@ -69,9 +70,16 @@
                                     <p:commandButton icon="ui-icon-trash"  update="tableItem"/>
                                 </p:column>
                             </p:dataTable>
-                            
-                            <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="margin-top: 30px; margin-left: 35%" />
-                            <p:commandButton value="Guardar" actionListener="#{manejadorBean.agregarItem()}" style="margin-left: 5%; width: 130px"/>
+                            <div class="label">
+                                <label  for="@next">Total $</label>
+                                <h:outputLabel id="suma" value= "${manejadorBean.suma}"/>
+                            </div>
+                            <div class="buttons">
+                                <p:commandButton value="Guardar" oncomplete="PF('file').show();" update=":dialogFile" style="margin-top: 30px; margin-left: 25%"/>
+                                <p:commandButton value="Sumar" update="suma" action="${manejadorBean.sumar()}" style="margin-top: 30px; margin-left: 25%" />
+                                <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="margin-top: 30px; margin-left: 25%" />
+                            </div>
+
                             <br/>
                         </p:panel>
                     </h:form>
@@ -79,7 +87,6 @@
 
 
                 <p:dialog id="dialog" header="Agregar Item" widgetVar="viaje"  resizable="false" modal="true" showEffect="clip" >
-
                     <h:form>
                         <label for="@next" >Producto y/o Servicio</label>
                         <p:selectOneMenu id="empleado" value="#{manejadorBean.item}" >
@@ -88,6 +95,17 @@
                         </p:selectOneMenu>
                         <p:commandButton value="Agregar" actionListener="#{manejadorBean.agregarItem()}" />
                         <p:commandButton value="Cancelar" oncomplete="PF('viaje').hide();" />
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dialogFile" header="Ingresa el nombre del archivo" widgetVar="file"  resizable="false" modal="true" showEffect="clip" >
+                    <h:form>
+                        <span class="ui-float-label" style="margin-top: 20px;">
+                            <p:inputText id="nombreFile" value="#{manejadorBean.nombreArchivo}"/>
+                            <p:outputLabel for="@previous" value="Nombre del archivo"/>
+                        </span>
+                        <p:commandButton value="Agregar" actionListener="#{manejadorBean.guardarViaje()}" />
+                        <p:commandButton value="Cancelar" oncomplete="PF('file').hide();" />
                     </h:form>
                 </p:dialog>
 
@@ -164,6 +182,17 @@
                 }
                 .box-button_create:hover{
                     background-color: rgb(93, 181, 111, .5);
+                }
+                .buttons{
+                    display: grid;
+                    grid-template-columns: repeat(3,1fr);
+                    justify-content: strech;
+                }
+                .label{
+                    margin-top: 25px;   
+                    display: grid;
+                    grid-template-columns: 1fr 8fr;
+                    font-size: 35;
                 }
                 .footer{
                     grid-area: foot;
