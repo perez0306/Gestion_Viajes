@@ -24,22 +24,44 @@
                             <p:autoUpdate/>
                         </p:messages>
 
+                        <p:commandButton value="Actualizar Planta" actionListener="#{manejadorBeanEmpleados.listarEmpelados()}" update="tableEmpleados" style="margin:20px;"/>
+
+                        <p:dataTable 
+                            id="tableEmpleados" 
+                            var="empleado" 
+                            value="#{manejadorBeanEmpleados.empleados}" 
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                            rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                            rows="10"
+                            style="width: 100%; align-content: flex-start" >
+                            <p:column headerText="Codigo" style="width: 70%">
+                                <h:outputLabel value= "${empleado.id}"/>
+                            </p:column>
+                            <p:column headerText="Nombre" style="width: 70%">
+                                <h:outputLabel value= "${empleado.nombreEmpleado}"/>
+                            </p:column>
+                            <p:column headerText="Rol" style="width: 70%">
+                                <h:outputLabel value= "${empleado.rol}"/>
+                            </p:column>
+                        </p:dataTable>
+
                         <p:panel header="Crear viaje"  >
 
-                            <label for="@next">Empleado</label>
-                            <p:selectOneMenu id="empleado" value="#{manejadorBean.empleadoSeleccionado}"  style="margin-top: 15px; margin-left: 15px">
-                                <f:selectItem itemLabel="Seleccione..." itemValue=""/>
-                                <f:selectItems value="#{manejadorBean.itemsEmpleados}"/>
-                                <p:ajax event="change" update="@this" />
-                            </p:selectOneMenu>
                             <br/>
                             <span class="ui-float-label" style="margin-top: 20px;">
-                                <p:inputText id="fecha" value="#{manejadorBean.fechaViaje}"/>
+                                <p:inputText id="idEmpleado" value="#{manejadorBeanEmpleados.idEmpleado}" />
+                                <p:outputLabel for="@previous" value="Codigo Empleado"/>
+                            </span>
+                            <br/>
+                            <span class="ui-float-label" style="margin-top: 20px;">
+                                <p:inputText id="fecha" value="#{manejadorBeanEmpleados.fechaViaje}"/>
                                 <p:outputLabel for="@previous" value="Fecha"/>
                             </span>
                             <br/>
                             <span class="ui-float-label">
-                                <p:inputText id="Destino" value="#{manejadorBean.destino}"/>
+                                <p:inputText id="Destino" value="#{manejadorBeanEmpleados.destino}"/>
                                 <p:outputLabel for="@previous" value="Destino"/>
                             </span>
                             <br/>
@@ -47,37 +69,38 @@
                             <p:dataTable 
                                 id="tableItem" 
                                 var="item" 
+                                value="${manejadorBeanEmpleados.itemsActivos}"
                                 paginator="true"
                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-                                rows="10"
+                                rows="5"
                                 style="width: 100%; align-content: flex-start" >
                                 <p:column headerText="Codigo" style="width: 70%">
-                                    <h:outputLabel value= "Archivo1"/>
+                                    <h:outputLabel value= "${item.id}"/>
                                 </p:column>
-                                <p:column headerText="Item" style="width: 70%">
-                                    <h:outputLabel value= "Archivo1"/>
+                                <p:column headerText="Nombre" style="width: 70%">
+                                    <h:outputLabel value= "${item.nombre}"/>
                                 </p:column>
                                 <p:column headerText="Categoria" style="width: 70%">
-                                    <h:outputLabel value= "Archivo1"/>
+                                    <h:outputLabel value= "${item.categoria}"/>
                                 </p:column>
                                 <p:column headerText="Precio" style="width: 70%">
-                                    <h:outputLabel value= "20000"/>
+                                    <h:outputLabel value= "${item.precio}"/>
                                 </p:column>
                                 <p:column headerText="Acciones" style="width:30%">
-                                    <p:commandButton icon="ui-icon-pencil" />
-                                    <p:commandButton icon="ui-icon-trash"  update="tableItem"/>
+                                    <p:commandButton icon="ui-icon-trash"   update="tableItem"/>
                                 </p:column>
                             </p:dataTable>
                             <div class="label">
                                 <label  for="@next">Total $</label>
-                                <h:outputLabel id="suma" value= "${manejadorBean.suma}"/>
+                                <h:outputLabel id="suma" value= "${manejadorBeanEmpleados.suma}"/>
                             </div>
                             <div class="buttons">
                                 <p:commandButton value="Guardar" oncomplete="PF('file').show();" update=":dialogFile" style="margin-top: 30px; margin-left: 25%"/>
-                                <p:commandButton value="Sumar" update="suma" action="${manejadorBean.sumar()}" style="margin-top: 30px; margin-left: 25%" />
+                                <p:commandButton value="Sumar" update="suma" action="${manejadorBeanEmpleados.sumar()}" style="margin-top: 30px; margin-left: 25%" />
                                 <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="margin-top: 30px; margin-left: 25%" />
+                                <p:commandButton value="Actualizar tabla" update="tableItem" action="${manejadorBeanEmpleados.sumar()}" style="margin-top: 30px; margin-left: 25%" />
                             </div>
 
                             <br/>
@@ -86,14 +109,34 @@
                 </section>
 
 
-                <p:dialog id="dialog" header="Agregar Item" widgetVar="viaje"  resizable="false" modal="true" showEffect="clip" >
-                    <h:form>
-                        <label for="@next" >Producto y/o Servicio</label>
-                        <p:selectOneMenu id="empleado" value="#{manejadorBean.item}" >
-                            <f:selectItem itemLabel="Seleccione..." itemValue=""/>
-                            <f:selectItems value="#{manejadorBean.listaItem}"/>
-                        </p:selectOneMenu>
-                        <p:commandButton value="Agregar" actionListener="#{manejadorBean.agregarItem()}" />
+                <p:dialog id="dialog" header="Agregar Item" widgetVar="viaje"  resizable="false" modal="true" showEffect="clip"  >
+                    <h:form >
+                        <label for="@next" style="width: 50%;">Producto y/o Servicio</label>
+                        <p:dataTable 
+                            id="tableEmpleados" 
+                            var="servicio" 
+                            value="#{manejadorBean.listaProductos}" 
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                            rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                            rows="10"
+                            style="width: 100%; align-content: flex-start" >
+                            <p:column headerText="Codigo" >
+                                <h:outputLabel value= "${servicio.id}"/>
+                            </p:column>
+                            <p:column headerText="Nombre" >
+                                <h:outputLabel value= "${servicio.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Precio" >
+                                <h:outputLabel value= "${servicio.precio}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <span class="ui-float-label" style="margin-top: 20px;">
+                            <p:inputText id="codigoItem" value="#{manejadorBeanEmpleados.idItem}"/>
+                            <p:outputLabel for="@previous" value="Codigo"/>
+                        </span>
+                        <p:commandButton value="Agregar" actionListener="#{manejadorBeanEmpleados.agregarItem()}" />
                         <p:commandButton value="Cancelar" oncomplete="PF('viaje').hide();" />
                     </h:form>
                 </p:dialog>
@@ -101,10 +144,10 @@
                 <p:dialog id="dialogFile" header="Ingresa el nombre del archivo" widgetVar="file"  resizable="false" modal="true" showEffect="clip" >
                     <h:form>
                         <span class="ui-float-label" style="margin-top: 20px;">
-                            <p:inputText id="nombreFile" value="#{manejadorBean.nombreArchivo}"/>
+                            <p:inputText id="nombreFile" value="#{manejadorBeanEmpleados.nombreArchivo}"/>
                             <p:outputLabel for="@previous" value="Nombre del archivo"/>
                         </span>
-                        <p:commandButton value="Agregar" actionListener="#{manejadorBean.guardarViaje()}" />
+                        <p:commandButton value="Agregar" actionListener="#{manejadorBeanEmpleados.crearViaje()}" />
                         <p:commandButton value="Cancelar" oncomplete="PF('file').hide();" />
                     </h:form>
                 </p:dialog>
@@ -128,7 +171,6 @@
                     display: grid;
                     grid-template-areas: 
                         "head head head"
-                        "left form right"
                         "left form right"
                         "foot foot foot";
                     grid-template-rows: 1fr 6fr  1fr ;
@@ -185,7 +227,7 @@
                 }
                 .buttons{
                     display: grid;
-                    grid-template-columns: repeat(3,1fr);
+                    grid-template-columns: repeat(4,1fr);
                     justify-content: strech;
                 }
                 .label{
