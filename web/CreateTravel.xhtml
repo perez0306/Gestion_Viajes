@@ -89,7 +89,7 @@
                                     <h:outputLabel value= "${item.precio}"/>
                                 </p:column>
                                 <p:column headerText="Acciones" style="width:30%">
-                                    <p:commandButton icon="ui-icon-trash"   update="tableItem"/>
+                                    <p:commandButton icon="ui-icon-trash" action="${manejadorBeanEmpleados.eliminarItem(item.id)}"  update="tableItem"/>
                                 </p:column>
                             </p:dataTable>
                             <div class="label">
@@ -100,7 +100,7 @@
                                 <p:commandButton value="Guardar" oncomplete="PF('file').show();" update=":dialogFile" style="margin-top: 30px; margin-left: 25%"/>
                                 <p:commandButton value="Sumar" update="suma" action="${manejadorBeanEmpleados.sumar()}" style="margin-top: 30px; margin-left: 25%" />
                                 <p:commandButton value="Añadir Item" oncomplete="PF('viaje').show();" update=":dialog" style="margin-top: 30px; margin-left: 25%" />
-                                <p:commandButton value="Actualizar tabla" update="tableItem" action="${manejadorBeanEmpleados.sumar()}" style="margin-top: 30px; margin-left: 25%" />
+                                <p:commandButton value="Actualizar tabla" update="tableItem"  style="margin-top: 30px; margin-left: 25%" />
                             </div>
 
                             <br/>
