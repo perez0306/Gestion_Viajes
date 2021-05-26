@@ -5,7 +5,6 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui">
-
     <html>
         <h:head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -22,9 +21,7 @@
                 <div class="box-button">
                     <h:link class="box-button_create" value = "Crear Viaje" outcome = "CreateTravel.xhtml"  />                                
                     <h:link class="box-button_list" value = "Lista Productos/Servicios" outcome = "ProductoServicios.xhtml" />                                
-                    <h:commandButton class="box-button_update" value="Actualizar planta" actionListener="#{manejadorBean.init()}" /> 
                 </div>
-
 
                 <h:form class="tableList">
 
@@ -98,7 +95,7 @@
                     grid-area: buttons;
                     display: grid;
                     grid-template-rows: 1fr ;
-                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-columns: repeat(2, 1fr);
                     justify-items: center;
                     align-items: center;
                 }
