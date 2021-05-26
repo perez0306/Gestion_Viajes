@@ -40,7 +40,7 @@ public class local_test {
         prueba.setNombre("Item1");
         lista.add(prueba);
         long suma = 4000L;
-        escritura.escribirArchivo(items, "Prueba", "prueba", "Viaje4", lista, suma);
+        escritura.escribirArchivo(items, "Prueba", "prueba", "Viaje4", lista, suma, 0);
         //file.insert(f);
     }
 }
